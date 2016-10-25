@@ -69,6 +69,8 @@ namespace WF_EnterpriseCredit
         {
             try
             {
+                taskProcesserLog = new MainTaskProcesser();
+                taskProcesserLog.GetNeedStop = false;
                 POIKeywords = new List<string>();                
                 if (string.IsNullOrEmpty(txtTask.Text))
                 {
@@ -146,7 +148,6 @@ namespace WF_EnterpriseCredit
         {
             try
             {
-                taskProcesserLog = new MainTaskProcesser();
                 taskProcesserLog.ParamCount = POIKeywords.Count;
                 taskProcesserLog.ThreadCount = 1;
                 taskProcesserLog.CollSleepSpace = 500;
