@@ -69,7 +69,6 @@ namespace WF_EnterpriseCredit
         {
             try
             {
-                taskProcesserLog = new MainTaskProcesser();
                 taskProcesserLog.GetNeedStop = false;
                 POIKeywords = new List<string>();                
                 if (string.IsNullOrEmpty(txtTask.Text))
@@ -173,7 +172,6 @@ namespace WF_EnterpriseCredit
         {
             try
             {
-                taskProcesserLog = new MainTaskProcesser();
                 taskProcesserLog.ExcelPath = txtSavepath.Text;
                 taskProcesserLog.Mode = 1;
                 taskProcesserLog.ThreadCount = 1;
@@ -311,6 +309,7 @@ namespace WF_EnterpriseCredit
 
         private void ECFrm_Load(object sender, EventArgs e)
         {
+            taskProcesserLog = new MainTaskProcesser();
             btnStop.Enabled = false;
         }
 
@@ -322,6 +321,7 @@ namespace WF_EnterpriseCredit
             saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd");
             DialogResult a = saveDialog.ShowDialog();
             txtSavepath.Text = saveDialog.FileName;
+            taskProcesserLog.IsFirst = true;
         }
     }
 
