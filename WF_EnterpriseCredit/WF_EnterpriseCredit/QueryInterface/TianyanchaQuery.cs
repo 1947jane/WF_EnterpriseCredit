@@ -180,55 +180,63 @@ namespace WF_EnterpriseCredit.QueryInterface
                             m_browser2.Navigate(item.Key);
                             Delay(2);
                             System.Windows.Forms.HtmlDocument docIn = m_browser2.Document;
-                            string str = docIn.Body.InnerText;
-                            HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
-                            if (elemsIn.Count == 8)
+                            if (docIn != null)
                             {
-                                goto Contect;
-                            }
-                            if (elemsIn != null) 
-                            {
-                                string strtyTel = null;
-                                string strtyUrl = null;
-                                string strtyEmail = null;
-                                foreach (HtmlElement elIn in elemsIn)
+                                string str = docIn.Body.InnerText;
+                                //为确认本次访问为正常用户行为，请您协助验证。
+                                if (Regex.IsMatch(str, "为确认本次访问为正常用户行为，请您协助验证"))
                                 {
-                                    if (elIn.GetAttribute("className").Equals("company_info_text"))
+                                    VerifyCode();
+                                    goto Contect;
+                                }
+                                HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
+                                if (elemsIn.Count == 8)
+                                {
+                                    goto Contect;
+                                }
+                                if (elemsIn != null)
+                                {
+                                    string strtyTel = null;
+                                    string strtyUrl = null;
+                                    string strtyEmail = null;
+                                    foreach (HtmlElement elIn in elemsIn)
                                     {
-                                        if (elIn.Children.Count == 10)
+                                        if (elIn.GetAttribute("className").Equals("company_info_text"))
                                         {
-                                            strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
-                                            strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                            strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
-                                        }
-                                        if (elIn.Children.Count == 11)
-                                        {
-                                            strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
-                                            strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                            strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
-                                        }
+                                            if (elIn.Children.Count == 10)
+                                            {
+                                                strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
+                                                strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                                strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
+                                            }
+                                            if (elIn.Children.Count == 11)
+                                            {
+                                                strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
+                                                strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                                strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
+                                            }
 
-                                    }
-                                    T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
-                                    if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
-                                    {
-                                        HtmlElementCollection els = elIn.Children[1].Children[0].Children;
-                                        ty.Name = item.Value;
-                                        ty.LegalPersonName = elIn.Children[0].Children[0].Children[1].Children[0].Children[0].Children[0].InnerText;
-                                        ty.Tel = strtyTel;
-                                        ty.Email = strtyEmail;
-                                        if (els[4].Children.Count != 0)
-                                        {
-                                            ty.RegLocation = els[4].Children[0].Children[0].Children[0].InnerText;
                                         }
-                                        HtmlElementCollection elss = elIn.Children[0].Children[0].Children;
-                                        if (!string.IsNullOrEmpty(ty.Email))
+                                        T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
+                                        if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
                                         {
-                                            m_pois.AddLast(ty);
+                                            HtmlElementCollection els = elIn.Children[0].Children[0].Children;
+                                            ty.Name = item.Value;
+                                            if (els.Count > 1)
+                                            {
+                                                ty.LegalPersonName = els[1].Children[0].Children[0].Children[0].InnerText;
+                                            }
+                                            ty.Tel = strtyTel;
+                                            ty.Email = strtyEmail;
+                                            HtmlElementCollection elss = elIn.Children[0].Children[0].Children;
+                                            if (!string.IsNullOrEmpty(ty.Email))
+                                            {
+                                                m_pois.AddLast(ty);
+                                            }
+                                            m_intcount++;
+                                            TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
+                                            break;
                                         }
-                                        m_intcount++;
-                                        TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
-                                        break;
                                     }
                                 }
                             }
