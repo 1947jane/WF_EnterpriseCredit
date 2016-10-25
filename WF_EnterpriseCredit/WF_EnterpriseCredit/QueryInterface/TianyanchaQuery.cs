@@ -176,11 +176,16 @@ namespace WF_EnterpriseCredit.QueryInterface
                         #region 详情页
                         foreach (var item in dic)
                         {
+                        Contect:
                             m_browser2.Navigate(item.Key);
                             Delay(2);
                             System.Windows.Forms.HtmlDocument docIn = m_browser2.Document;
                             string str = docIn.Body.InnerText;
                             HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
+                            if (elemsIn.Count == 8)
+                            {
+                                goto Contect;
+                            }
                             if (elemsIn != null) 
                             {
                                 string strtyTel = null;
@@ -223,6 +228,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                                         }
                                         m_intcount++;
                                         TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
+                                        break;
                                     }
                                 }
                             }
