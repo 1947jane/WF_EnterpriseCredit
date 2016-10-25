@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using WF_EnterpriseCredit.Interface;
 using System.Collections;
 
 namespace WF_EnterpriseCredit
