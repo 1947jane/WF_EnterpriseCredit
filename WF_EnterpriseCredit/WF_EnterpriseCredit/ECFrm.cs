@@ -220,7 +220,7 @@ namespace WF_EnterpriseCredit
                 while (true) 
                 {
                     sw.Start();
-                    int intIndex = 2;
+                    int intIndex = 1;
                     if (taskProcesserLog.Complete || taskProcesserLog.GetNeedStop)
                     {
                         strExcuteLog = "执行完成";
