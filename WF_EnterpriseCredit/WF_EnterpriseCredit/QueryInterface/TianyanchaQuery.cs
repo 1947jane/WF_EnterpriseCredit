@@ -233,6 +233,19 @@ namespace WF_EnterpriseCredit.QueryInterface
                                             {
                                                 m_pois.AddLast(ty);
                                             }
+                                            if (TaskProcessor.IsFirst)
+                                            {
+                                                DataTable dt = GetDataTable(m_pois);
+                                                Excel.DataTableToExcel(savepath, dt);
+                                                TaskProcessor.IsFirst = false;
+                                                //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
+                                                //ExcelSavePOI();
+                                            }
+                                            else 
+                                            {
+                                                DataTable dt = GetDataTable(m_pois);
+                                                Excel.DataTableToExcel(savepath, dt, true);
+                                            }
                                             m_intcount++;
                                             TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
                                             break;
@@ -268,13 +281,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                             }
                         }
                     }
-                    if (m_pois.Count > 0)
-                    {
-                        DataTable dt = GetDataTable(m_pois);
-                        Excel.DataTableToExcel(savepath, dt, false, m_strkeyword, true);
-                        //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
-                        //ExcelSavePOI();
-                    }
+               
                 }
                 return true;
                 //1、快速获取天眼查网站数据，尽可能确保全面；
