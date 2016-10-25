@@ -236,6 +236,8 @@ namespace WF_EnterpriseCredit
                 }         
                 blnOneTaskComlete = true;
                 intComplete++;
+                sw.Stop();
+                sw.Reset();
                 //intComplete++;
                 mainThread.Abort();
 
@@ -284,6 +286,7 @@ namespace WF_EnterpriseCredit
             if (MessageBox.Show("是否终止收集?", "提示", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 taskProcesserLog.GetNeedStop = true;
+                taskProcesserLog.Complete = true;
                 btnStop.Enabled = false;
                 btnExcute.Enabled = true;
             }
