@@ -137,11 +137,15 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
                 Query query = null;
                 Thread.Sleep(3000);
                 query = GetQuery();
-                foreach (string str in poiKeywords)
+                while (!(TaskProcessor.Complete))
                 {
-                    CollExcute(str, query);
+                    foreach (string str in poiKeywords)
+                    {
+                        CollExcute(str, query);
+                    }
+                    TaskProcessor.GetNeedStop = true;
                 }
-                TaskProcessor.GetNeedStop = true;
+               
             }
             catch (Exception ex)
             {
