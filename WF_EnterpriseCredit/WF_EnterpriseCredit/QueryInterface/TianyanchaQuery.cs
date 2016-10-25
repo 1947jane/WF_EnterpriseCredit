@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
-using WF_EnterpriseCredit.Interface;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Web;
@@ -60,15 +59,10 @@ namespace WF_EnterpriseCredit.QueryInterface
         MainTaskProcesser TaskProcessor;
         string savepath;
         /// <summary>
-        /// get方法
-        /// </summary>
-        GetMethod GetData;
-        /// <summary>
         /// 构造函数
         /// </summary>
         public TianyanchaQuery()
-        {
-            GetData = new GetMethod();     
+        {   
             m_timer.Tick += new EventHandler(m_timer_Tick);
         }
         public LinkedList<LocalEntity.T_Web_TianYanCha_POI> GetJson(MainTaskProcesser taskProcesser, string keyword)
