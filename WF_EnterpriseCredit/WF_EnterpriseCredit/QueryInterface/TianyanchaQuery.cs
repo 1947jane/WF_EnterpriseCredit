@@ -272,8 +272,6 @@ namespace WF_EnterpriseCredit.QueryInterface
             }
             finally
             {
-                Console.WriteLine(Thread.CurrentThread.Name + ":end");
-
             }
         }
         /// <summary>
