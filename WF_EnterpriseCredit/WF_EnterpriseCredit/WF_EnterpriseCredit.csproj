@@ -77,8 +77,6 @@
     <Compile Include="ExcuteProcesser\TaskProcesser.cs" />
     <Compile Include="ExcuteProcesser\TaskProcesserEC.cs" />
     <Compile Include="ExcuteProcesser\TaskProcesserEx.cs" />
-    <Compile Include="Interface\GetMethod.cs" />
-    <Compile Include="Interface\GetDataMethod.cs" />
     <Compile Include="LocalEntity\T_Web_TianYanCha_POI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
