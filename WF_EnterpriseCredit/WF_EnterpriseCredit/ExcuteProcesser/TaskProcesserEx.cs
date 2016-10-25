@@ -69,7 +69,10 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
         /// 外部终止
         /// </summary>
         public bool GetNeedStop { get; set; }
-
+        /// <summary>
+        /// 是否是第一次建表
+        /// </summary>
+        public bool IsFirst { get; set; }
         /// <summary>
         /// 完成
         /// </summary>
