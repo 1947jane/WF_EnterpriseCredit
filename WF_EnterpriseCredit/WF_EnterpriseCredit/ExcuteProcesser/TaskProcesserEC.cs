@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.Threading;
 using WF_EnterpriseCredit.QueryInterface;
 using System.IO;
-using WF_EnterpriseCredit.Interface;
 
 namespace WF_EnterpriseCredit.ExcuteProcesser
 {
