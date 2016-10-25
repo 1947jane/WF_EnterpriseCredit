@@ -180,7 +180,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                             m_browser2.Navigate(item.Key);
                             Delay(2);
                             System.Windows.Forms.HtmlDocument docIn = m_browser2.Document;
-                            if (docIn != null&&docIn.Body!=null)
+                            if (docIn != null && docIn.Body != null)
                             {
                                 string str = docIn.Body.InnerText;
                                 //为确认本次访问为正常用户行为，请您协助验证。
@@ -241,7 +241,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                                                 //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
                                                 //ExcelSavePOI();
                                             }
-                                            else 
+                                            else
                                             {
                                                 DataTable dt = GetDataTable(m_pois);
                                                 Excel.DataTableToExcel(savepath, dt, true);
@@ -253,12 +253,16 @@ namespace WF_EnterpriseCredit.QueryInterface
                                     }
                                 }
                             }
-                            else
+                            if (TaskProcessor.Complete)
                             {
-                                int sh = 0;
+                                break;
                             }
                         }                       
                         #endregion
+                        if (TaskProcessor.Complete)
+                        {
+                            break;
+                        }
                         string strkeyword = HttpUtility.UrlEncode(m_strkeyword).ToUpper();
                         string strurls = string.Format(strUrl, strkeyword, i + 1);
                         m_browser1.Navigate(strurls);
