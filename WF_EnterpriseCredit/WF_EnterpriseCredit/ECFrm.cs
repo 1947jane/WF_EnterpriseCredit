@@ -48,7 +48,7 @@ namespace WF_EnterpriseCredit
         MainTaskProcesser taskProcesserLog;
         /// <summary>
         /// 功能描述:构造函数
-        /// 作　　者:黄斯平
+        /// 作　　者:
         /// 创建日期:2016-09-08 16:01:13
         /// 任务编号:
         /// </summary>
@@ -59,7 +59,7 @@ namespace WF_EnterpriseCredit
 
         /// <summary>
         /// 功能描述:开始
-        /// 作　　者:黄斯平
+        /// 作　　者:
         /// 创建日期:2016-09-09 14:32:54
         /// 任务编号:
         /// </summary>
@@ -112,7 +112,7 @@ namespace WF_EnterpriseCredit
         }
         /// <summary>
         /// 功能描述:执行所有文件任务
-        /// 作　　者:黄斯平
+        /// 作　　者:
         /// 创建日期:2016-09-09 14:35:15
         /// 任务编号:
         /// </summary>
@@ -138,7 +138,7 @@ namespace WF_EnterpriseCredit
         }
         /// <summary>
         /// 功能描述:执行单个文件任务
-        /// 作　　者:黄斯平
+        /// 作　　者:
         /// 创建日期:2016-09-09 14:36:16
         /// 任务编号:
         /// </summary>
@@ -164,7 +164,7 @@ namespace WF_EnterpriseCredit
 
         /// <summary>
         /// 功能描述:开始收集
-        /// 作　　者:黄斯平
+        /// 作　　者:
         /// 创建日期:2016-09-09 14:39:26
         /// 任务编号:
         /// </summary>
