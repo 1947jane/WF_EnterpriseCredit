@@ -82,7 +82,6 @@
     <Compile Include="LocalEntity\T_Web_TianYanCha_POI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Province.cs" />
     <Compile Include="QueryInterface\TianyanchaQuery.cs" />
     <Compile Include="QueryInterface\Query.cs" />
     <EmbeddedResource Include="ECFrm.resx">
