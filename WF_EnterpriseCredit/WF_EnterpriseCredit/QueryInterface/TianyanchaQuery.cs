@@ -74,6 +74,7 @@ namespace WF_EnterpriseCredit.QueryInterface
         {   
             m_timer.Tick += new EventHandler(m_timer_Tick);
         }
+
         public LinkedList<LocalEntity.T_Web_TianYanCha_POI> GetJson(MainTaskProcesser taskProcesser, string keyword)
         {
             m_browser1 = new WebBrowser();
@@ -179,14 +180,17 @@ namespace WF_EnterpriseCredit.QueryInterface
                             break;
                         }
                     }
+
+                    if(m_intPageSum<1)
+                        goto NavateAgain;
                     for (int i = 1; i < m_intPageSum + 1; i++)
                     {
-                        
+
 
                         Dictionary<string, string> dic = new Dictionary<string, string>();
 
                         GetUrlList(elems, ref dic);
-                        if (dic.Count != 0) 
+                        if (dic.Count != 0)
                         {
                             GetInner(dic);
                             m_browser2.Dispose();
@@ -203,7 +207,7 @@ namespace WF_EnterpriseCredit.QueryInterface
 
                         string strurls = string.Format(strUrl, strkeyword, i + 1);
                         m_browser1.Navigate(strurls);
-                       
+
                         while (m_browser1.ReadyState != WebBrowserReadyState.Complete)
                         {
                             Delay(3);
@@ -223,7 +227,11 @@ namespace WF_EnterpriseCredit.QueryInterface
                             }
                         }
                     }
-               
+
+                }
+                else
+                {
+                    goto NavateAgain;
                 }
                 return true;
                 //1、快速获取天眼查网站数据，尽可能确保全面；
@@ -242,6 +250,7 @@ namespace WF_EnterpriseCredit.QueryInterface
         {
             #region 详情页
             m_browser2=new WebBrowser();
+            
             foreach (var item in dic)
             {
             Contect:
@@ -332,6 +341,8 @@ namespace WF_EnterpriseCredit.QueryInterface
             }
             #endregion
         }
+
+        
         /// <summary>
         /// 功能描述:调用验证码exe
         /// 作　　者:huangsp
