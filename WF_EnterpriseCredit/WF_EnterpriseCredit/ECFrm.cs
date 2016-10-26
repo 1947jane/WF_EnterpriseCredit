@@ -325,6 +325,8 @@ namespace WF_EnterpriseCredit
             DialogResult a = saveDialog.ShowDialog();
             txtSavepath.Text = saveDialog.FileName;
             taskProcesserLog.IsFirst = true;
+            taskProcesserLog.GetNeedStop = false;
+            taskProcesserLog.Complete = false;
         }
     }
 
