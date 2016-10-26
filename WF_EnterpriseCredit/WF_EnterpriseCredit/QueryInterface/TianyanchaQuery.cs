@@ -185,96 +185,12 @@ namespace WF_EnterpriseCredit.QueryInterface
                         Dictionary<string, string> dic = new Dictionary<string, string>();
 
                         GetUrlList(elems, ref dic);
-                        #region 详情页
-                        foreach (var item in dic)
+                        if (dic.Count != 0) 
                         {
-                        Contect:
-                            m_browser2.Navigate(item.Key);
-                            Delay(2);
-                            System.Windows.Forms.HtmlDocument docIn = m_browser2.Document;
-                            if (docIn != null && docIn.Body != null)
-                            {
-                                string str = docIn.Body.InnerText;
-                                //为确认本次访问为正常用户行为，请您协助验证。
-                                if (Regex.IsMatch(str, "为确认本次访问为正常用户行为，请您协助验证"))
-                                {
-                                    VerifyCode();
-                                    goto Contect;
-                                }
-                                HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
-                                if (elemsIn.Count == 8)
-                                {
-                                    goto Contect;
-                                }
-                                if (elemsIn != null)
-                                {
-                                    string strtyTel = null;
-                                    string strtyUrl = null;
-                                    string strtyEmail = null;
-                                    foreach (HtmlElement elIn in elemsIn)
-                                    {
-                                        if (elIn.GetAttribute("className").Equals("company_info_text"))
-                                        {
-                                            if (elIn.Children.Count == 10)
-                                            {
-                                                strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
-                                                strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                                strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
-                                            }
-                                            if (elIn.Children.Count == 11)
-                                            {
-                                                strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
-                                                strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                                strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
-                                            }
-
-                                        }
-                                        T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
-                                        if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
-                                        {
-                                            HtmlElementCollection els = elIn.Children[0].Children[0].Children;
-                                            ty.Name = item.Value;
-                                            if (els.Count > 1)
-                                            {
-                                                ty.LegalPersonName = els[1].Children[0].Children[0].Children[0].InnerText;
-                                            }
-                                            ty.Tel = strtyTel;
-                                            ty.Email = strtyEmail;
-                                            HtmlElementCollection elss = elIn.Children[0].Children[0].Children;
-                                            if (!string.IsNullOrEmpty(ty.Email))
-                                            {
-                                                m_pois.AddLast(ty);
-                                            }
-                                            if (TaskProcessor.IsFirst)
-                                            {
-                                                DataTable dt = GetDataTable(m_pois);
-                                                Excel.DataTableToExcel(savepath, dt);
-                                                m_pois.Clear();
-                                                dt.Rows.Clear();
-                                                TaskProcessor.IsFirst = false;
-                                                //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
-                                                //ExcelSavePOI();
-                                            }
-                                            else
-                                            {
-                                                DataTable dt = GetDataTable(m_pois);
-                                                Excel.DataTableToExcel(savepath, dt, true);
-                                                m_pois.Clear();                                               
-                                                dt.Clear();
-                                            }
-                                            m_intcount++;
-                                            TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if (TaskProcessor.Complete)
-                            {
-                                break;
-                            }
-                        }                       
-                        #endregion
+                            GetInner(dic);
+                            m_browser2.Dispose();
+                            m_browser2 = null;
+                        }
                         if (TaskProcessor.Complete)
                         {
                             break;
@@ -321,6 +237,100 @@ namespace WF_EnterpriseCredit.QueryInterface
             finally
             {
             }
+        }
+        public void GetInner(Dictionary<string, string> dic) 
+        {
+            #region 详情页
+            m_browser2=new WebBrowser();
+            foreach (var item in dic)
+            {
+            Contect:
+                m_browser2.Navigate(item.Key);
+                Delay(2);
+                System.Windows.Forms.HtmlDocument docIn = m_browser2.Document;
+                if (docIn != null && docIn.Body != null)
+                {
+                    string str = docIn.Body.InnerText;
+                    //为确认本次访问为正常用户行为，请您协助验证。
+                    if (Regex.IsMatch(str, "为确认本次访问为正常用户行为，请您协助验证"))
+                    {
+                        VerifyCode();
+                        goto Contect;
+                    }
+                    HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
+                    if (elemsIn.Count == 8)
+                    {
+                        goto Contect;
+                    }
+                    if (elemsIn != null)
+                    {
+                        string strtyTel = null;
+                        string strtyUrl = null;
+                        string strtyEmail = null;
+                        foreach (HtmlElement elIn in elemsIn)
+                        {
+                            if (elIn.GetAttribute("className").Equals("company_info_text"))
+                            {
+                                if (elIn.Children.Count == 10)
+                                {
+                                    strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
+                                    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                    strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
+                                }
+                                if (elIn.Children.Count == 11)
+                                {
+                                    strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
+                                    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                    strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
+                                }
+
+                            }
+                            T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
+                            if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
+                            {
+                                HtmlElementCollection els = elIn.Children[0].Children[0].Children;
+                                ty.Name = item.Value;
+                                if (els.Count > 1)
+                                {
+                                    ty.LegalPersonName = els[1].Children[0].Children[0].Children[0].InnerText;
+                                }
+                                ty.Tel = strtyTel;
+                                ty.Email = strtyEmail;
+                                HtmlElementCollection elss = elIn.Children[0].Children[0].Children;
+                                if (!string.IsNullOrEmpty(ty.Email))
+                                {
+                                    m_pois.AddLast(ty);
+                                }
+                                if (TaskProcessor.IsFirst)
+                                {
+                                    DataTable dt = GetDataTable(m_pois);
+                                    Excel.DataTableToExcel(savepath, dt);
+                                    m_pois.Clear();
+                                    dt.Rows.Clear();
+                                    TaskProcessor.IsFirst = false;
+                                    //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
+                                    //ExcelSavePOI();
+                                }
+                                else
+                                {
+                                    DataTable dt = GetDataTable(m_pois);
+                                    Excel.DataTableToExcel(savepath, dt, true);
+                                    m_pois.Clear();
+                                    dt.Clear();
+                                }
+                                m_intcount++;
+                                TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (TaskProcessor.Complete)
+                {
+                    break;
+                }
+            }
+            #endregion
         }
         /// <summary>
         /// 功能描述:调用验证码exe
