@@ -237,6 +237,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                                             {
                                                 DataTable dt = GetDataTable(m_pois);
                                                 Excel.DataTableToExcel(savepath, dt);
+                                                dt.Rows.Clear();
                                                 TaskProcessor.IsFirst = false;
                                                 //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
                                                 //ExcelSavePOI();
@@ -266,6 +267,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                         string strkeyword = HttpUtility.UrlEncode(m_strkeyword).ToUpper();
                         string strurls = string.Format(strUrl, strkeyword, i + 1);
                         m_browser1.Navigate(strurls);
+                       
                         while (m_browser1.ReadyState != WebBrowserReadyState.Complete)
                         {
                             Delay(3);
