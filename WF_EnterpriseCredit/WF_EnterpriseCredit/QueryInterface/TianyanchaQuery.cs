@@ -78,6 +78,7 @@ namespace WF_EnterpriseCredit.QueryInterface
         {
             m_browser1 = new WebBrowser();
             m_browser2 = new WebBrowser();
+            m_browser1.NewWindow += new System.ComponentModel.CancelEventHandler(m_browser1_NewWindow);
             m_browser1.StatusTextChanged += new EventHandler(browser1_StatusTextChanged);
             m_pois = new LinkedList<T_Web_TianYanCha_POI>();
             TaskProcessor=taskProcesser;
@@ -196,7 +197,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                             break;
                         }
 
-                       
+
                         IntPtr pHandle = GetCurrentProcess();
                         SetProcessWorkingSetSize(pHandle, -1, -1);
 
@@ -445,6 +446,18 @@ namespace WF_EnterpriseCredit.QueryInterface
                     }
                 }
             }
+        }
+          /// <summary>
+        /// 功能描述:webbrowser状态改变事件
+        /// 作　　者:huangsp
+        /// 创建日期:2015-12-10 15:59:19
+        /// 任务编号:信息收集子系统开发
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void m_browser1_NewWindow(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
         }
         /// <summary>
         /// 功能描述:webbrowser状态改变事件
