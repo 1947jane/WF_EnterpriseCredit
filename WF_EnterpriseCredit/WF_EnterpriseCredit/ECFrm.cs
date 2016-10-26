@@ -189,16 +189,12 @@ namespace WF_EnterpriseCredit
                 mainThread.Start();
 
                 Thread[] collThreads = new Thread[taskProcesserLog.ThreadCount];
-                CollRunLog[] collLogs = new CollRunLog[taskProcesserLog.ThreadCount];
                 Thread.Sleep(100);
                 for (int i = 0; i < taskProcesserLog.ThreadCount; i++)
                 {
-                    collLogs[i] = new CollRunLog();
-                    CollRunLog s = collLogs[i];
                     Thread.Sleep(100);
                     int intS = i + 1;
-                    collLogs[i].Name = "收集线程" + intS;
-                    collThreads[i] = new Thread(delegate()
+                    collThreads[i] = new Thread(delegate()  
                     {
                         obj.CollRunning(POIKeywords);
                     });
@@ -238,7 +234,6 @@ namespace WF_EnterpriseCredit
                 intComplete++;
                 sw.Stop();
                 sw.Reset();
-                //intComplete++;
                 mainThread.Abort();
 
                 #endregion
@@ -292,23 +287,6 @@ namespace WF_EnterpriseCredit
             }
         }
 
-        private void RemoveCompleteTask()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(TaskFile))
-                {
-                    //string strNewFile = TaskFile.Replace("执行", "完成");
-                    string strNewFile = TaskFile.Replace("Excute", "Complete");
-                    File.Move(TaskFile, strNewFile);
-
-                }
-            }
-            catch
-            {
-                throw;
-            }
-        }
 
         private void ECFrm_Load(object sender, EventArgs e)
         {
