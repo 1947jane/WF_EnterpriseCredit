@@ -129,7 +129,7 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
         /// 任务编号:
         /// </summary>
         /// <param name="log">log</param>
-        public void CollRunning(List<string> poiKeywords)
+        public void CollRunning(Queue<string> poiKeywords)
         {
 
             try
@@ -139,11 +139,15 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
                 query = GetQuery();
                 while (!(TaskProcessor.Complete))
                 {
-                    foreach (string str in poiKeywords)
+                    if (poiKeywords.Count != 0) 
                     {
-                        CollExcute(str, query);
+                        string strkey = poiKeywords.Dequeue();
+                        CollExcute(strkey, query);
                     }
-                    TaskProcessor.GetNeedStop = true;
+                    else
+                    {
+                        TaskProcessor.GetNeedStop = true;
+                    }
                 }
                
             }
