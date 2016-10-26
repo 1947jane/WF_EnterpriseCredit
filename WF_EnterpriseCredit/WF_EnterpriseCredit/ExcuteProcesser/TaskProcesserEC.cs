@@ -43,16 +43,11 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
             string strResult = string.Empty;
             //参数总数
             int intParamCount = TaskProcessor.ParamCount;
-            int intCount = 0;
-            //已执行参数总数
-            int intParamProcessed = 0;
             //标记是否有数据需要加载
             DateTime dteLastSave = DateTime.Now;
             //TaskProcessor.Progress = string.Format("总体进度:{0}/{1}",
                     //intCount + intParamProcessed, intParamCount);
             TaskProcessor.Error = 0;
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
             return null;
         }
         Random r = new Random();
