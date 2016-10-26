@@ -91,7 +91,7 @@ namespace WF_EnterpriseCredit.QueryInterface
             string strkeyword = HttpUtility.UrlEncode(m_strkeyword).ToUpper();
             strUrl = "http://www.tianyancha.com/search/p{1}?key={0}";
             string strurl = string.Format(strUrl, strkeyword, 1);
-            GetInfo(m_browser1, strurl);
+            GetInfo(m_browser1, strurl,strkeyword);
             m_browser1.Dispose();
             m_browser1 = null;
             GC.Collect();
@@ -134,7 +134,7 @@ namespace WF_EnterpriseCredit.QueryInterface
         /// <param name="m_browser1">m_browser1</param>
         /// <param name="strurl">strurl</param>
         /// <returns>返回值</returns>
-        private bool GetInfo(WebBrowser m_browser1, string strurl)
+        private bool GetInfo(WebBrowser m_browser1, string strurl,string strkeyword)
         {
 
             try
@@ -200,7 +200,6 @@ namespace WF_EnterpriseCredit.QueryInterface
                         IntPtr pHandle = GetCurrentProcess();
                         SetProcessWorkingSetSize(pHandle, -1, -1);
 
-                        string strkeyword = HttpUtility.UrlEncode(m_strkeyword).ToUpper();
                         string strurls = string.Format(strUrl, strkeyword, i + 1);
                         m_browser1.Navigate(strurls);
                        
