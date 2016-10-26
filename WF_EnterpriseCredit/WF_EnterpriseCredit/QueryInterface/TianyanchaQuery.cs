@@ -237,6 +237,7 @@ namespace WF_EnterpriseCredit.QueryInterface
                                             {
                                                 DataTable dt = GetDataTable(m_pois);
                                                 Excel.DataTableToExcel(savepath, dt);
+                                                m_pois.Clear();
                                                 dt.Rows.Clear();
                                                 TaskProcessor.IsFirst = false;
                                                 //Excel.TableToExcelForXLSX(dt, savepath, m_strkeyword, m_intcount);
@@ -246,6 +247,8 @@ namespace WF_EnterpriseCredit.QueryInterface
                                             {
                                                 DataTable dt = GetDataTable(m_pois);
                                                 Excel.DataTableToExcel(savepath, dt, true);
+                                                m_pois.Clear();                                               
+                                                dt.Clear();
                                             }
                                             m_intcount++;
                                             TaskProcessor.Progress = string.Format("关键字:{0};收集数量：{1}", m_strkeyword, m_intcount);
