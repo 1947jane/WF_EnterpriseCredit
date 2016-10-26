@@ -21,7 +21,7 @@ namespace WF_EnterpriseCredit
         /// <summary>
         /// 收集POI的Keyword
         /// </summary>
-        public List<string> POIKeywords;
+        public Queue<string> POIKeywords;
         /// <summary>
         /// 执行文件夹
         /// </summary>
@@ -70,7 +70,7 @@ namespace WF_EnterpriseCredit
             try
             {
                 taskProcesserLog.GetNeedStop = false;
-                POIKeywords = new List<string>();                
+                POIKeywords = new Queue<string>();          
                 if (string.IsNullOrEmpty(txtTask.Text))
                 {
                     MessageBox.Show("请输入关键字");
@@ -93,7 +93,7 @@ namespace WF_EnterpriseCredit
                     }
                     foreach (var hs in hsKeywords)
                     {
-                        POIKeywords.Add(hs);
+                        POIKeywords.Enqueue(hs);
                     }
                     blnOneTaskComlete = true;
                     intComplete = 0;
