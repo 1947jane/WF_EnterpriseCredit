@@ -16,11 +16,20 @@ using System.Data.Common;
 using System.Threading;
 using System.Data;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace WF_EnterpriseCredit.QueryInterface
 {
     public class TianyanchaQuery : Query
     {
+
+        [DllImport("KERNEL32.DLL", EntryPoint = "SetProcessWorkingSetSize", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        internal static extern bool SetProcessWorkingSetSize(IntPtr pProcess, int dwMinimumWorkingSetSize, int dwMaximumWorkingSetSize);
+
+        [DllImport("KERNEL32.DLL", EntryPoint = "GetCurrentProcess", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        internal static extern IntPtr GetCurrentProcess();
+
+
         /// <summary>
         /// 记录数量
         /// </summary>
@@ -89,6 +98,7 @@ namespace WF_EnterpriseCredit.QueryInterface
             GC.WaitForPendingFinalizers();
             return results;
         }
+
 
         public DataTable GetDataTable(LinkedList<T_Web_TianYanCha_POI> m_pois)
         {
@@ -170,6 +180,8 @@ namespace WF_EnterpriseCredit.QueryInterface
                     }
                     for (int i = 1; i < m_intPageSum + 1; i++)
                     {
+                        
+
                         Dictionary<string, string> dic = new Dictionary<string, string>();
 
                         GetUrlList(elems, ref dic);
@@ -267,6 +279,11 @@ namespace WF_EnterpriseCredit.QueryInterface
                         {
                             break;
                         }
+
+                       
+                        IntPtr pHandle = GetCurrentProcess();
+                        SetProcessWorkingSetSize(pHandle, -1, -1);
+
                         string strkeyword = HttpUtility.UrlEncode(m_strkeyword).ToUpper();
                         string strurls = string.Format(strUrl, strkeyword, i + 1);
                         m_browser1.Navigate(strurls);
