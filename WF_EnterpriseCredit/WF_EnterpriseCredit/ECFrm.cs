@@ -321,7 +321,7 @@ namespace WF_EnterpriseCredit
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.DefaultExt = "xlsx";
             saveDialog.Filter = "Excel文件|*.xlsx";
-            saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd");
+            saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
             DialogResult a = saveDialog.ShowDialog();
             txtSavepath.Text = saveDialog.FileName;
             taskProcesserLog.IsFirst = true;
