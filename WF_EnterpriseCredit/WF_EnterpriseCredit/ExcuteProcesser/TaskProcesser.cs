@@ -9,7 +9,7 @@ namespace WF_EnterpriseCredit.ExcuteProcesser
     {
         string MainRunning();
 
-        void CollRunning(List<string> strkeywords);
+        void CollRunning(Queue<string> strkeywords);
 
         void Prepare(MainTaskProcesser taskProcesserLog);
     }
