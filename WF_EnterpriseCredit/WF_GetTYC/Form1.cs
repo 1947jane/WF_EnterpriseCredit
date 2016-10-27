@@ -80,6 +80,8 @@ namespace WF_GetTYC
             }
             btnStart.Enabled = false;
             btnStop.Enabled = true;
+            blnStop = false;
+            blnNext = false;
             Thread th = new Thread(delegate()
             {
                 try
