@@ -82,6 +82,7 @@ namespace WF_GetTYC
             btnStop.Enabled = true;
             blnStop = false;
             blnNext = false;
+            lblCount.Text = "0";
             Thread th = new Thread(delegate()
             {
                 try
@@ -90,12 +91,11 @@ namespace WF_GetTYC
                     DataTable dt = GetDataTable();
                     DataTableToExcel(strSavePath, dt, false);
                     string[] keys = strKey.Split(new char[] { ',', '，' });
-                    lblState.Text = "抓取中";
-                    int intBegin = 1;
+                    lblState.Text = "抓取中";                   
                     foreach (var key in keys)
                     {
-                        lblKey.Text = key;
-                        lblCount.Text = "0";
+                        lblKey.Text = key;                       
+                        int intBegin = 1;
                         for (int i = 1; i <= intMaxCount; i++)
                         {
                             if (blnStop)
