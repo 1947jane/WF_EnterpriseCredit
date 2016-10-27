@@ -187,7 +187,10 @@ namespace WF_GetMSG
                     {
                         doc = m_browser1.Document;
                     }));
-                    Thread.Sleep(500);
+                    while (doc == null)
+                    {
+                        Thread.Sleep(10);
+                    }
                     if (doc != null && doc.Body != null)
                     {
                         //为确认本次访问为正常用户行为，请您协助验证。
@@ -339,7 +342,10 @@ namespace WF_GetMSG
                     {
                         docIn = m_browser2.Document;
                     }));
-                    Thread.Sleep(500);
+                    while (docIn == null)
+                    {
+                        Thread.Sleep(10);
+                    }
                     if (docIn != null && docIn.Body != null)
                     {
                         string str = docIn.Body.InnerText;
