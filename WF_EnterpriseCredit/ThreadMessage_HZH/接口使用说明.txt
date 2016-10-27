@@ -1,0 +1,40 @@
+﻿客户端实现IClientProcessMessage接口
+ 加入以下代码(即实现接口方法):
+ public void SetOnMsgEventEx(ProcessMessage.DelegateMsg del){this.SetOnMsgEvent(del); }
+ public void ReadMsgFromMainClientEx(){this.ReadMsgFromMainClient();}
+ public void SendMsgToProcessEx(string strProcessID, object objMsg){this.SendMsgToProcess(strProcessID, objMsg);}
+
+ 构造方法中调用SetOnMsgEventEx和ReadMsgFromMainClientEx（必须先调用SetOnMsgEventEx），如
+ SetOnMsgEventEx(new ProcessMessage.DelegateMsg(Message_OnEvent));
+ ReadMsgFromMainClientEx();
+ 其中Message_OnEvent代码如下
+  private void Message_OnEvent(object objmsg, object objfrom)
+  {
+      switch (objmsg.ToString())
+       {
+           case "test":
+                SendMsgToMainClientEx("这是一个测试消息" + objmsg + "," + objfrom );
+                break;
+       }
+  }
+
+****************************************************************************************
+工具实现IToolProcessMessage接口
+加入以下代码(即实现接口方法)：
+public void SetOnMsgEventEx(ProcessMessage.DelegateMsg del){this.SetOnMsgEvent(del); }
+public void SendMsgToMainClientEx(object objMsg) { this.SendMsgToMainClient(objMsg); }
+public void ReadMsgFromMiEx() { this.ReadMsgFromMi(); }
+
+构造方法中调用SetOnMsgEventEx、ReadMsgFromMiEx（必须先调用SetOnMsgEventEx），如
+SetOnMsgEventEx(new ProcessMessage.DelegateMsg(Msg_OnEvent));
+ReadMsgFromMiEx();
+其中Msg_OnEvent代码如下
+  public void Msg_On(object msg, object title)
+  {
+       switch (msg.ToString())
+       {
+           case "test":
+                SendMsgToMainClientEx("这是一个测试消息" + msg + "," + title );
+                break;
+       }
+    }
