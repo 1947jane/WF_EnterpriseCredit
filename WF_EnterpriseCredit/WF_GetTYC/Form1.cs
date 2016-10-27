@@ -89,6 +89,7 @@ namespace WF_GetTYC
                     DataTableToExcel(strSavePath, dt, false);
                     string[] keys = strKey.Split(new char[] { ',', '，' });
                     lblState.Text = "抓取中";
+                    int intBegin = 1;
                     foreach (var key in keys)
                     {
                         lblKey.Text = key;
@@ -105,7 +106,8 @@ namespace WF_GetTYC
                             p.StartInfo.WorkingDirectory = Application.StartupPath;
                             p.StartInfo.UseShellExecute = false;
                             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                            p.StartInfo.Arguments = "\"" + strSavePath + "\" " + _url;
+                            p.StartInfo.Arguments = "\"" + strSavePath + "\" " + _url + " " + intBegin;
+                            intBegin = 0;
                             p.StartInfo.CreateNoWindow = false;
                             p.Start();
                             if (p != null)
