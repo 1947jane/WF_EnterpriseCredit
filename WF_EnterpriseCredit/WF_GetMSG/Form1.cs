@@ -229,8 +229,14 @@ namespace WF_GetMSG
                     {
                         HtmlElementCollection elems = doc.GetElementsByTagName("div");
                         Dictionary<string, string> dic = new Dictionary<string, string>();
-                        GetUrlList(elems, ref dic);
-
+                        try
+                        {
+                            GetUrlList(elems, ref dic);
+                        }
+                        catch
+                        {
+                            goto start;
+                        }
                         if (dic.Count != 0)
                         {
                             GetInner(dic);
@@ -239,7 +245,7 @@ namespace WF_GetMSG
                         {
                             goto start;
                         }
-                       
+
                     }
                     else
                     {
@@ -316,90 +322,96 @@ namespace WF_GetMSG
             foreach (var item in dic)
             {
             Contect:
-                m_blnDefLoaded = false;
-                m_browser2.Navigate(item.Key);
-                int intSleepIndex = 0;
-                while (!m_blnDefLoaded)
+                try
                 {
-                    Thread.Sleep(100);
-                    intSleepIndex++;
-                    if (intSleepIndex > 100)
-                        goto Contect;
-                }
-
-                System.Windows.Forms.HtmlDocument docIn = null;
-                m_browser2.BeginInvoke(new MethodInvoker(delegate()
-                {
-                    docIn = m_browser2.Document;
-                }));
-                Thread.Sleep(500);
-                if (docIn != null && docIn.Body != null)
-                {
-                    string str = docIn.Body.InnerText;
-                    //为确认本次访问为正常用户行为，请您协助验证。
-                    if (Regex.IsMatch(str, "为确认本次访问为正常用户行为，请您协助验证"))
+                    m_blnDefLoaded = false;
+                    m_browser2.Navigate(item.Key);
+                    int intSleepIndex = 0;
+                    while (!m_blnDefLoaded)
                     {
-                        VerifyCode();
-                        goto Contect;
+                        Thread.Sleep(100);
+                        intSleepIndex++;
+                        if (intSleepIndex > 100)
+                            goto Contect;
                     }
-
-                    HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
-                    if (elemsIn.Count == 8)
+                    System.Windows.Forms.HtmlDocument docIn = null;
+                    m_browser2.BeginInvoke(new MethodInvoker(delegate()
                     {
-                        goto Contect;
-                    }
-                    if (elemsIn != null)
+                        docIn = m_browser2.Document;
+                    }));
+                    Thread.Sleep(500);
+                    if (docIn != null && docIn.Body != null)
                     {
-                        string strtyTel = string.Empty;
-                        string strtyUrl = string.Empty;
-                        string strtyEmail = string.Empty;
-                        string strName = string.Empty;
-                        foreach (HtmlElement elIn in elemsIn)
+                        string str = docIn.Body.InnerText;
+                        //为确认本次访问为正常用户行为，请您协助验证。
+                        if (Regex.IsMatch(str, "为确认本次访问为正常用户行为，请您协助验证"))
                         {
-                            if (elIn.GetAttribute("className").Equals("company_info_text"))
-                            {
-                                if (elIn.Children.Count == 10)
-                                {
-                                    strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
-                                    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                    strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
-                                }
-                                else if (elIn.Children.Count == 11)
-                                {
-                                    strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
-                                    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                    strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
-                                }
-
-                            }
-                            else if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
-                            {
-
-                                HtmlElementCollection els = elIn.Children[0].Children[0].Children;
-
-                                if (els.Count > 1)
-                                {
-                                    strName = els[1].Children[0].Children[0].Children[0].InnerText;
-                                }
-
-                                break;
-                            }
-                            else
-                            {
-                                continue;
-                            }
+                            VerifyCode();
+                            goto Contect;
                         }
 
-                        T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
-                        ty.LegalPersonName = strName;
-                        ty.Tel = strtyTel;
-                        ty.Email = strtyEmail;
-                        ty.Name = item.Value;
+                        HtmlElementCollection elemsIn = docIn.GetElementsByTagName("div");
+                        if (elemsIn.Count == 8)
+                        {
+                            goto Contect;
+                        }
+                        if (elemsIn != null)
+                        {
+                            string strtyTel = string.Empty;
+                            string strtyUrl = string.Empty;
+                            string strtyEmail = string.Empty;
+                            string strName = string.Empty;
+                            foreach (HtmlElement elIn in elemsIn)
+                            {
+                                if (elIn.GetAttribute("className").Equals("company_info_text"))
+                                {
+                                    if (elIn.Children.Count == 10)
+                                    {
+                                        strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
+                                        strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                        strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
+                                    }
+                                    else if (elIn.Children.Count == 11)
+                                    {
+                                        strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
+                                        strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                        strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
+                                    }
 
-                        DataTable dt = GetDataTable(new List<T_Web_TianYanCha_POI>() { ty });
-                        ExcelEX.DataTableToExcel(m_savepath, dt, true);
-                        SendMsgToMainClientEx("+");
+                                }
+                                else if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
+                                {
+
+                                    HtmlElementCollection els = elIn.Children[0].Children[0].Children;
+
+                                    if (els.Count > 1)
+                                    {
+                                        strName = els[1].Children[0].Children[0].Children[0].InnerText;
+                                    }
+
+                                    break;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+
+                            T_Web_TianYanCha_POI ty = new T_Web_TianYanCha_POI();
+                            ty.LegalPersonName = strName;
+                            ty.Tel = strtyTel;
+                            ty.Email = strtyEmail;
+                            ty.Name = item.Value;
+
+                            DataTable dt = GetDataTable(new List<T_Web_TianYanCha_POI>() { ty });
+                            ExcelEX.DataTableToExcel(m_savepath, dt, true);
+                            SendMsgToMainClientEx("+");
+                        }
                     }
+                }
+                catch
+                {
+                    goto Contect;
                 }
 
             }
