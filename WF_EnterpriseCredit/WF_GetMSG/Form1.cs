@@ -40,7 +40,7 @@ namespace WF_GetMSG
         }
 
 
-        string m_strListUrl = "http://www.tianyancha.com/search?key=%E7%99%BE%E5%BA%A6%E5%9C%A8%E7%BA%BF";
+        string m_strListUrl = "http://www.tianyancha.com/search?key=莱克电气股份有限公司";
         string m_strDefUrl = string.Empty;
         /// <summary>
         /// <summary>
@@ -92,6 +92,8 @@ namespace WF_GetMSG
         {
             m_browser1 = new WebBrowser();
             m_browser2 = new WebBrowser();
+            m_browser1.ScriptErrorsSuppressed = true;
+            m_browser2.ScriptErrorsSuppressed = true;
             m_browser1.Size = new Size(1024, 768);
             m_browser2.Size = new Size(1024, 768);
             m_browser2.Location = new Point(800, 0);
@@ -371,18 +373,35 @@ namespace WF_GetMSG
                             {
                                 if (elIn.GetAttribute("className").Equals("company_info_text"))
                                 {
-                                    if (elIn.Children.Count == 10)
+                                    string strMsg = elIn.InnerText;
+                                    strMsg = Regex.Replace(strMsg, @"暂无|\s", "");
+                                    int int1 = strMsg.IndexOf("电话:");
+                                    int int2 = strMsg.IndexOf("地址:");
+                                    strMsg = strMsg.Substring(int1, int2 - int1);
+                                    string[] values = Regex.Split(strMsg, @"电话:|邮箱:|网址:");
+                                    if (values.Length == 4)
                                     {
-                                        strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
-                                        strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                        strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
+                                        strtyTel = values[1];
+                                        strtyEmail = values[2];
+                                        strtyUrl = values[3];
                                     }
-                                    else if (elIn.Children.Count == 11)
-                                    {
-                                        strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
-                                        strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
-                                        strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
-                                    }
+                                    strtyTel = string.IsNullOrEmpty(strtyTel) ? "暂无" : strtyTel;
+                                    strtyEmail = string.IsNullOrEmpty(strtyEmail) ? "暂无" : strtyEmail;
+                                    strtyUrl = string.IsNullOrEmpty(strtyUrl) ? "暂无" : strtyUrl;
+
+
+                                    //if (elIn.Children.Count == 10)
+                                    //{
+                                    //    strtyTel = elIn.Children[2].InnerText.Trim().Replace("电话: ", "");
+                                    //    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                    //    strtyUrl = elIn.Children[5].InnerText.Trim().Replace("网址: ", "");
+                                    //}
+                                    //else if (elIn.Children.Count == 11)
+                                    //{
+                                    //    strtyTel = elIn.Children[3].InnerText.Trim().Replace("电话: ", "");
+                                    //    strtyEmail = elIn.Children[3].InnerText.Trim().Replace("邮箱: ", "");
+                                    //    strtyUrl = elIn.Children[6].InnerText.Trim().Replace("网址: ", "");
+                                    //}
 
                                 }
                                 else if (elIn.GetAttribute("className").Equals("row b-c-white company-content"))
