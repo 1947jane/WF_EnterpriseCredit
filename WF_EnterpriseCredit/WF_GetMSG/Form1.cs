@@ -212,7 +212,9 @@ namespace WF_GetMSG
                     {
                         if (doc != null)
                         {
-                        goHere:
+                          //  int intOut = 0;
+                        //goHere:
+                          //  intOut++;
                             string strReg = @"共(\d+)页";
                             Match match = Regex.Match(doc.Body.InnerText, strReg);
                             if (match != null)
@@ -225,13 +227,18 @@ namespace WF_GetMSG
                             else
                             {
                                 Thread.Sleep(1000);
-                                goto goHere;
+                                //if (intOut > 30)
+                                //{
+                                    goto start;
+                                //}
+                                //goto goHere;
                             }
                         }
                     }
 
                     if (doc != null)
                     {
+                        #region
                         HtmlElementCollection elems = doc.GetElementsByTagName("div");
                         Dictionary<string, string> dic = new Dictionary<string, string>();
                         try
@@ -250,7 +257,7 @@ namespace WF_GetMSG
                         {
                             goto start;
                         }
-
+                        #endregion
                     }
                     else
                     {
