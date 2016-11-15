@@ -112,10 +112,21 @@ namespace WF_GetTYC
                             intBegin = 0;
                             p.StartInfo.CreateNoWindow = false;
                             p.Start();
-                            if (p != null)
+                            int intOut = 0;
+                            while (!p.HasExited)
                             {
-                                p.WaitForExit(1000 * 60 * 30);
+                                intOut++;
+                                Thread.Sleep(1000);
+                                if (intOut > 60 * 5)
+                                {
+                                    p.Kill();
+                                    break;
+                                }
                             }
+                            //if (p != null)
+                            //{
+                            //    p.WaitForExit(1000 * 60 * 30);
+                            //}
                             if (blnStop)
                             {
                                 return;
